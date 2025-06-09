@@ -6,9 +6,17 @@ import os
 from matplotlib import pyplot as plt
 from PIL import Image
 from pathlib import Path
+import sys
 N=parselatlon.N
 MOD=kminhash.MOD
 K=100
+
+def progress_bar(i, total, bar_length=30):
+	percent = int(100 * i / total)
+	filled_length = int(bar_length * i // total)
+	bar = '#' * filled_length + '-' * (bar_length - filled_length)
+	sys.stdout.write(f'\rProgress: [{bar}] {percent}%')
+	sys.stdout.flush()
 
 def paint(coordinate1,coordinate2,p,path):
 	x_coords = [x for x, y in coordinate1]
@@ -76,10 +84,14 @@ def evaluatepath(path1,path2,path="my.png"):
 def sortpath(coors,index, K):
 	fin=[]
 	for i in range(0,len(coors)):
+		progress_bar(i, K)
+		#sys.stdout.write(f"\r{i}/{K}")
+		#sys.stdout.flush()
 		if i!=index:
 			fin.append((evaluateraw(coors[i],coors[index]),coors[i]))
 	fin.sort(reverse=True)
 	cnt=0
+	os.makedirs('website', exist_ok=True)
 	for i in range(0,len(fin)):
 		item=list(fin[i])
 		if item[0]==0 or i>=K:
@@ -94,7 +106,6 @@ def paintpath(coors,index,K):
 	html=""
 	for i in range(1,K+1):
 		html=html+"<img src=\""+str(i)+".png"+"\", width='33%'>\n"
-
 	with open("website/index.html", "w", encoding="utf-8") as f:
 		f.write(html)
 
