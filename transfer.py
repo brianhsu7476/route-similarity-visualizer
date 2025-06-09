@@ -84,7 +84,7 @@ def evaluatepath(path1,path2,path="my.png"):
 def sortpath(coors,index, K):
 	fin=[]
 	for i in range(0,len(coors)):
-		progress_bar(i, K)
+		progress_bar(i+1, K)
 		#sys.stdout.write(f"\r{i}/{K}")
 		#sys.stdout.flush()
 		if i!=index:
@@ -108,5 +108,6 @@ def paintpath(coors,index,K):
 		html=html+"<img src=\""+str(i)+".png"+"\", width='33%'>\n"
 	with open("website/index.html", "w", encoding="utf-8") as f:
 		f.write(html)
+	print('Output written in website/index.html')
 
 
